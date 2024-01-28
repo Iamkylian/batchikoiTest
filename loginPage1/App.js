@@ -59,8 +59,8 @@ const LoginPage = () => {
       source={require('./Img/background.jpg')}
       style={styles.backgroundImage}
     >
-      <View style={styles.container}>
-        <Text style={styles.title}>Connexion</Text>
+      <View style={[styles.container, globalStyles.cursorStyle]}>
+        <Text style={styles.title}>Connexion à <Text style={styles.titleNameApp}>Batchikoi</Text></Text> 
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
             <TouchableWithoutFeedback onPress={() => handlePlaceholderPress(usernameInputRef)}>
@@ -100,6 +100,12 @@ const LoginPage = () => {
   );
 };
 
+export const globalStyles = StyleSheet.create({
+  cursorStyle: {
+    cursor: 'url("./Img/cursorKatana.png"), auto',
+  },
+});
+
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
@@ -126,6 +132,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontFamily: 'Verdana',
+  },
+  titleNameApp: {
+    fontSize: 28,
+    marginBottom: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    fontFamily: 'Verdana',
+    filter: 'drop-shadow(5px 7px 5px #900C3F)',
   },
   inputContainer: {
     marginBottom: 20,
