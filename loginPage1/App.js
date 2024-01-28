@@ -1,14 +1,57 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ImageBackground, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
 
 const LoginPage = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isUsernameFocused, setIsUsernameFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
+  const animatedValueUsername = useRef(new Animated.Value(8)).current;
+  const animatedValuePassword = useRef(new Animated.Value(8)).current;
+
+  const usernameInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
 
   const handleLogin = () => {
     console.log('Nom d\'utilisateur ou email:', usernameOrEmail);
     console.log('Mot de passe:', password);
-    // Ajoutez ici la logique de connexion avec votre backend
+  };
+
+  const handleUsernameFocus = () => {
+    setIsUsernameFocused(true);
+    animatePlaceholder(animatedValueUsername, -22);
+  };
+
+  const handleUsernameBlur = () => {
+    setIsUsernameFocused(false);
+    if (!usernameOrEmail) {
+      animatePlaceholder(animatedValueUsername, 15);
+    }
+  };
+
+  const handlePasswordFocus = () => {
+    setIsPasswordFocused(true);
+    animatePlaceholder(animatedValuePassword, -22);
+  };
+
+  const handlePasswordBlur = () => {
+    setIsPasswordFocused(false);
+    if (!password) {
+      animatePlaceholder(animatedValuePassword, 15);
+    }
+  };
+
+  const animatePlaceholder = (animatedValue, toValue) => {
+    Animated.timing(animatedValue, {
+      toValue,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const handlePlaceholderPress = (inputRef) => {
+    inputRef.current && inputRef.current.focus();
   };
 
   return (
@@ -19,21 +62,37 @@ const LoginPage = () => {
       <View style={styles.container}>
         <Text style={styles.title}>Connexion</Text>
         <View style={styles.formContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Nom d'utilisateur ou email"
-            onChangeText={(text) => setUsernameOrEmail(text)}
-            value={usernameOrEmail}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Mot de passe"
-            secureTextEntry={true}
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-          />
+          <View style={styles.inputContainer}>
+            <TouchableWithoutFeedback onPress={() => handlePlaceholderPress(usernameInputRef)}>
+              <Animated.Text style={[styles.placeholder, { top: animatedValueUsername }]}>Nom d'utilisateur ou email</Animated.Text>
+            </TouchableWithoutFeedback>
+            <TextInput
+              ref={usernameInputRef}
+              style={styles.input}
+              placeholder=""
+              onChangeText={(text) => setUsernameOrEmail(text)}
+              value={usernameOrEmail}
+              onFocus={handleUsernameFocus}
+              onBlur={handleUsernameBlur}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TouchableWithoutFeedback onPress={() => handlePlaceholderPress(passwordInputRef)}>
+              <Animated.Text style={[styles.placeholder, { top: animatedValuePassword }]}>Mot de passe</Animated.Text>
+            </TouchableWithoutFeedback>
+            <TextInput
+              ref={passwordInputRef}
+              style={styles.input}
+              placeholder=""
+              secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              onFocus={handlePasswordFocus}
+              onBlur={handlePasswordBlur}
+            />
+          </View>
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Se connecter</Text>
+            <Text style={styles.buttonSubmit}>Se connecter</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -44,7 +103,7 @@ const LoginPage = () => {
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover', // ou 'stretch' pour remplir toute la vue
+    resizeMode: 'cover',
     justifyContent: 'center',
   },
   container: {
@@ -54,36 +113,50 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   formContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.7)', // Couleur de fond avec opacité
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     padding: 20,
+    paddingBottom: 30,
+    paddingTop: 30,
     borderRadius: 10,
-    width: '80%', // Largeur du formulaire par rapport à l'écran
+    width: '80%',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     marginBottom: 20,
-    color: 'white', // Couleur du texte
+    color: 'white',
+    fontWeight: 'bold',
+    fontFamily: 'Verdana',
+  },
+  inputContainer: {
+    marginBottom: 20,
   },
   input: {
     height: 40,
     width: '100%',
-    borderColor: 'gray',
+    borderColor: 'black',
     borderWidth: 1,
+    borderRadius: 10,
     marginBottom: 10,
     paddingLeft: 10,
-    backgroundColor: 'white', // Couleur de fond du champ de saisie
+    backgroundColor: 'white',
+  },
+  placeholder: {
+    position: 'absolute',
+    left: 15,
+    color: 'gray',
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#900C3F',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
     marginTop: 10,
   },
-  buttonText: {
+  buttonSubmit: {
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
+    fontFamily: 'Roboto',
   },
 });
 
