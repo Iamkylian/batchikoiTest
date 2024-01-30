@@ -60,7 +60,7 @@ const LoginPage = () => {
       style={styles.backgroundImage}
     >
       <View style={[styles.container, globalStyles.cursorStyle]}>
-        <Text style={styles.title}>Connexion à <Text style={styles.titleNameApp}>Batchikoi</Text></Text> 
+        <Text style={styles.title}>Connexion<Text style={styles.titleNameApp}></Text></Text> 
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
             <TouchableWithoutFeedback onPress={() => handlePlaceholderPress(usernameInputRef)}>

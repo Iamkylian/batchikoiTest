@@ -1,5 +1,5 @@
 {
-  "name": "loginpage",
+  "name": "loginpage1",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -9,15 +9,17 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~50.0.4",
-    "expo-status-bar": "~1.11.1",
+    "@expo/metro-runtime": "~3.1.1",
+    "expo": "^49.0.22",
+    "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
-    "react-native": "0.73.2"
+    "react-dom": "18.2.0",
+    "react-native": "0.72.6",
+    "react-native-web": "^0.19.10",
+    "@expo/webpack-config": "^19.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@types/react": "~18.2.45",
-    "typescript": "^5.1.3"
+    "@babel/core": "^7.20.0"
   },
   "private": true
 }
